@@ -2,32 +2,78 @@
   <div class="config-card">
     <h1>Barcode Label Generator</h1>
     <p class="description">
-      Enter label numbers separated by commas or use ranges with a dash.
+      Configure your barcode labels using regular numbers, 5s (mother + 4 children), or 10s (mother + 9 children).
     </p>
-    
-    <div class="examples">
-      <strong>Examples:</strong>
-      <ul>
-        <li><code>7008440080, 7008440081, 7008440082</code></li>
-        <li><code>7008440080-7008440084</code></li>
-        <li><code>100-105, 200, 300-302</code></li>
-      </ul>
-    </div>
 
-    <div class="input-group">
-      <label for="labelInput">Label Numbers:</label>
-      <textarea 
-        id="labelInput"
-        [(ngModel)]="labelInput" 
-        placeholder="e.g., 7008440080-7008440084, 9999440010"
-        rows="6"
-      ></textarea>
+    <div class="input-section">
+      <div class="input-group">
+        <label for="labelInput">
+          <span class="label-title">Regular Labels</span>
+          <span class="label-subtitle">Individual label numbers</span>
+        </label>
+        <div class="examples">
+          <strong>Examples:</strong>
+          <ul>
+            <li><code>7008440080, 7008440081</code> - Comma separated</li>
+            <li><code>100-105</code> - Range notation</li>
+          </ul>
+        </div>
+        <textarea 
+          id="labelInput"
+          [(ngModel)]="labelInput" 
+          placeholder="e.g., 7008440080, 7008440081, 100-105"
+          rows="3"
+        ></textarea>
+      </div>
+
+      <div class="input-group">
+        <label for="fivesInput">
+          <span class="label-title">5s - Mother + 4 Children</span>
+          <span class="label-subtitle">Appends 0-4 to base numbers</span>
+        </label>
+        <div class="examples">
+          <strong>Examples:</strong>
+          <ul>
+            <li><code>100</code> → generates 1000, 1001, 1002, 1003, 1004</li>
+            <li><code>700844008</code> → generates 7008440080, 7008440081, 7008440082, 7008440083, 7008440084</li>
+            <li><code>100, 200</code> - Multiple base numbers</li>
+            <li><code>100-102</code> - Range of base numbers</li>
+          </ul>
+        </div>
+        <textarea 
+          id="fivesInput"
+          [(ngModel)]="fivesInput" 
+          placeholder="e.g., 100, 200, 300-305"
+          rows="3"
+        ></textarea>
+      </div>
+
+      <div class="input-group">
+        <label for="tensInput">
+          <span class="label-title">10s - Mother + 9 Children</span>
+          <span class="label-subtitle">Appends 0-9 to base numbers</span>
+        </label>
+        <div class="examples">
+          <strong>Examples:</strong>
+          <ul>
+            <li><code>100</code> → generates 1000, 1001, 1002, ..., 1009</li>
+            <li><code>700844008</code> → generates 7008440080 through 7008440089</li>
+            <li><code>100-102</code> - Range generates all sequences</li>
+          </ul>
+        </div>
+        <textarea 
+          id="tensInput"
+          [(ngModel)]="tensInput" 
+          placeholder="e.g., 100, 999944001"
+          rows="3"
+        ></textarea>
+      </div>
     </div>
 
     <button 
       class="generate-btn" 
       (click)="generateLabels()"
-      [disabled]="!labelInput.trim()"
+      [disabled]="!hasAnyInput()"
     >
       Generate Labels
     </button>
