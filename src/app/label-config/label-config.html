@@ -2,9 +2,162 @@
   <div class="config-card">
     <h1>Barcode Label Generator</h1>
     <p class="description">
-      Configure your barcode labels using regular numbers, 5s (mother + 4 children), or 10s (mother + 9 children).
+      Configure your barcode labels in Basic or Advanced mode.
     </p>
 
+    <!-- Mode Toggle -->
+    <div class="mode-toggle">
+      <button 
+        class="mode-btn" 
+        [class.active]="mode === 'basic'"
+        (click)="mode = 'basic'"
+      >
+        Basic
+      </button>
+      <button 
+        class="mode-btn" 
+        [class.active]="mode === 'advanced'"
+        (click)="mode = 'advanced'"
+      >
+        Advanced
+      </button>
+    </div>
+
+    <!-- Basic Mode -->
+    @if (mode === 'basic') {
+    <div class="input-section">
+      <div class="input-group">
+        <label for="codeLength">
+          <span class="label-title">Code Length</span>
+          <span class="label-subtitle">Total length of each barcode (including prefix and child digits)</span>
+        </label>
+        <input 
+          type="number" 
+          id="codeLength"
+          [(ngModel)]="codeLength"
+          min="1"
+          placeholder="e.g., 10"
+        />
+      </div>
+
+      <div class="input-group">
+        <label>
+          <span class="label-title">Prefix Strategy</span>
+          <span class="label-subtitle">How to generate the prefix for all codes</span>
+        </label>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input 
+              type="radio" 
+              name="prefixStrategy" 
+              value="date"
+              [(ngModel)]="prefixStrategy"
+            />
+            <span>Current Date (YYMMDD format)</span>
+          </label>
+          <label class="radio-option">
+            <input 
+              type="radio" 
+              name="prefixStrategy" 
+              value="static"
+              [(ngModel)]="prefixStrategy"
+            />
+            <span>Static Number</span>
+          </label>
+        </div>
+        
+        @if (prefixStrategy === 'static') {
+        <input 
+          type="text" 
+          id="staticPrefix"
+          [(ngModel)]="staticPrefix"
+          placeholder="e.g., 123456"
+          class="static-prefix-input"
+        />
+        }
+        
+        <div class="examples">
+          <strong>Example:</strong>
+          <ul>
+            @if (prefixStrategy === 'date') {
+            <li>Today's date ({{ getPrefix() }}) will be used as prefix</li>
+            }
+            @if (prefixStrategy === 'static') {
+            <li>Your static number will be used as prefix</li>
+            }
+          </ul>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="startOffset">
+          <span class="label-title">Start Offset</span>
+          <span class="label-subtitle">Starting counter number (default is 0)</span>
+        </label>
+        <input 
+          type="number" 
+          id="startOffset"
+          [(ngModel)]="startOffset"
+          min="0"
+          placeholder="0"
+        />
+        <div class="examples">
+          <strong>Example:</strong>
+          <ul>
+            <li>Offset 0: First group starts at ...00, ...01, ...02...</li>
+            <li>Offset 5: First group starts at ...50, ...51, ...52...</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="counts-row">
+        <div class="input-group">
+          <label for="countFives">
+            <span class="label-title">Count of 5s</span>
+            <span class="label-subtitle">Number of groups (5 labels each: mother 0 + children 1-4)</span>
+          </label>
+          <input 
+            type="number" 
+            id="countFives"
+            [(ngModel)]="countFives"
+            min="0"
+            placeholder="0"
+          />
+        </div>
+
+        <div class="input-group">
+          <label for="countTens">
+            <span class="label-title">Count of 10s</span>
+            <span class="label-subtitle">Number of groups (10 labels each: mother 0 + children 1-9)</span>
+          </label>
+          <input 
+            type="number" 
+            id="countTens"
+            [(ngModel)]="countTens"
+            min="0"
+            placeholder="0"
+          />
+        </div>
+      </div>
+
+      <div class="examples">
+        <strong>Result Preview:</strong>
+        <ul>
+          <li>Total labels: {{ (countFives * 5) + (countTens * 10) }}</li>
+          <li>Example codes (prefix={{ getPrefix() }}, length={{ codeLength }}, offset={{ startOffset }}):</li>
+          @if (countFives > 0) {
+          <li>First 5s group: <code>{{ getPrefix() }}{{ (startOffset * 10).toString().padStart(codeLength - getPrefix().length, '0') }}</code> through <code>{{ getPrefix() }}{{ (startOffset * 10 + 4).toString().padStart(codeLength - getPrefix().length, '0') }}</code></li>
+          }
+          @if (countTens > 0) {
+          <li>First 10s group: <code>{{ getPrefix() }}{{ ((startOffset + countFives) * 10).toString().padStart(codeLength - getPrefix().length, '0') }}</code> through <code>{{ getPrefix() }}{{ ((startOffset + countFives) * 10 + 9).toString().padStart(codeLength - getPrefix().length, '0') }}</code></li>
+          }
+        </ul>
+      </div>
+    </div>
+    }
+
+    <!-- Advanced Mode -->
+    @if (mode === 'advanced') {
     <div class="input-section">
       <div class="input-group">
         <label for="labelInput">
@@ -69,6 +222,7 @@
         ></textarea>
       </div>
     </div>
+    }
 
     <button 
       class="generate-btn" 

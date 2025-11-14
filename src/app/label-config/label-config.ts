@@ -14,22 +14,91 @@ export class LabelConfig {
   private router = inject(Router);
   private labelService = inject(LabelService);
   
+  // Mode selection
+  mode: 'basic' | 'advanced' = 'basic';
+  
+  // Advanced mode properties
   labelInput: string = '';
   fivesInput: string = '';
   tensInput: string = '';
+  
+  // Basic mode properties
+  codeLength: number = 10;
+  prefixStrategy: 'date' | 'static' = 'date';
+  staticPrefix: string = '';
+  startOffset: number = 0;
+  countFives: number = 0;
+  countTens: number = 0;
 
   generateLabels(): void {
-    const regularLabels = this.parseLabels(this.labelInput);
-    const fivesLabels = this.parseMotherChildLabels(this.fivesInput, 5);
-    const tensLabels = this.parseMotherChildLabels(this.tensInput, 10);
+    let allLabels: string[] = [];
     
-    const allLabels = [...regularLabels, ...fivesLabels, ...tensLabels];
+    if (this.mode === 'basic') {
+      allLabels = this.generateBasicModeLabels();
+    } else {
+      const regularLabels = this.parseLabels(this.labelInput);
+      const fivesLabels = this.parseMotherChildLabels(this.fivesInput, 5);
+      const tensLabels = this.parseMotherChildLabels(this.tensInput, 10);
+      allLabels = [...regularLabels, ...fivesLabels, ...tensLabels];
+    }
+    
     this.labelService.setLabels(allLabels);
     this.router.navigate(['/preview']);
   }
 
   hasAnyInput(): boolean {
+    if (this.mode === 'basic') {
+      return this.codeLength > 0 && (this.countFives > 0 || this.countTens > 0);
+    }
     return !!(this.labelInput.trim() || this.fivesInput.trim() || this.tensInput.trim());
+  }
+  
+  private generateBasicModeLabels(): string[] {
+    const labels: string[] = [];
+    const prefix = this.getPrefix();
+    
+    // Validate prefix length
+    if (prefix.length >= this.codeLength) {
+      console.error('Prefix length must be less than code length');
+      return [];
+    }
+    
+    const remainingLength = this.codeLength - prefix.length;
+    let groupCounter = this.startOffset;
+    
+    // Generate 5s (mother 0 + children 1-4 = 5 labels total)
+    for (let group = 0; group < this.countFives; group++) {
+      for (let child = 0; child <= 4; child++) {
+        // Format: counter + child digit, padded to fill remaining length
+        const counterAndChild = (groupCounter * 10 + child).toString().padStart(remainingLength, '0');
+        labels.push(prefix + counterAndChild);
+      }
+      groupCounter++;
+    }
+    
+    // Generate 10s (mother 0 + children 1-9 = 10 labels total)
+    for (let group = 0; group < this.countTens; group++) {
+      for (let child = 0; child <= 9; child++) {
+        // Format: counter + child digit, padded to fill remaining length
+        const counterAndChild = (groupCounter * 10 + child).toString().padStart(remainingLength, '0');
+        labels.push(prefix + counterAndChild);
+      }
+      groupCounter++;
+    }
+    
+    return labels;
+  }
+  
+  getPrefix(): string {
+    if (this.prefixStrategy === 'date') {
+      const now = new Date();
+      const year = now.getFullYear().toString().slice(-2);
+      const month = (now.getMonth() + 1).toString().padStart(2, '0');
+      const day = now.getDate().toString().padStart(2, '0');
+      return year + month + day; // YYMMDD format
+    } else {
+      return this.staticPrefix;
+    }
   }
 
   private parseLabels(input: string): string[] {
