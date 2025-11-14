@@ -1,0 +1,20 @@
+.labels {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.label-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 38mm;
+  height: 21.2mm;
+}
+
+.no-frame {
+  background-image: none;
+  padding: 10px 10px;
+  font-size: 40px;
+
+}

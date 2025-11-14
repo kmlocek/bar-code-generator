@@ -1,0 +1,15 @@
+<div class="labels">
+      @for (label of labels; track $index) {
+      <div class="label-container">
+            <div class="label no-frame">
+                  <ngx-barcode6 bc-format="CODE128" 
+                  [bc-value]="label.text" 
+                  [bc-display-value]="true"
+                  [bc-width]="width"
+                  [bc-height]="height"
+                  [bc-font-size]="fontSize">
+            </ngx-barcode6>
+            </div>
+      </div>
+      }
+</div>

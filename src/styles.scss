@@ -1,1 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
+*,
+::after,
+::before {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  height: 276.6mm;
+  width: 190mm;
+  font-family: 'Oswald', sans-serif;
+
+}
+
+html {
+  margin: 0;
+  height: 297mm;
+  width: 210mm;
+  padding-top: 10.7mm;
+  padding-bottom: 10.7mm;
+  padding-left: 10mm;
+  padding-right: 10mm;
+}
