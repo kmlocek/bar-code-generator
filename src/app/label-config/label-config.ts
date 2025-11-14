@@ -2,17 +2,20 @@ import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { LabelService } from '../services/label.service';
+import { TranslationService } from '../services/translation.service';
+import { LanguageSwitcher } from '../language-switcher/language-switcher';
 
 @Component({
   selector: 'app-label-config',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, LanguageSwitcher],
   templateUrl: './label-config.html',
   styleUrl: './label-config.scss',
 })
 export class LabelConfig {
   private router = inject(Router);
   private labelService = inject(LabelService);
+  translationService = inject(TranslationService);
   
   // Mode selection
   mode: 'basic' | 'advanced' = 'basic';

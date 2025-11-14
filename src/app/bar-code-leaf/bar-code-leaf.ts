@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { NgxBarcode6Module } from 'ngx-barcode6';
 import { LabelService } from '../services/label.service';
 import { Router } from '@angular/router';
+import { TranslationService } from '../services/translation.service';
 
 export interface Label {
   text: string;
@@ -17,6 +18,7 @@ export interface Label {
 export class BarCodeLeaf implements OnInit {
   private labelService = inject(LabelService);
   private router = inject(Router);
+  translationService = inject(TranslationService);
   
   width = 1;
   height = 50;

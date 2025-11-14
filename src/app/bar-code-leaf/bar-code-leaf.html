@@ -1,4 +1,4 @@
-<button class="back-button no-print" (click)="goBack()">← Back to Config</button>
+<button class="back-button no-print" (click)="goBack()">{{ translationService.t('button.backToConfig') }}</button>
 
 <div class="labels">
       @for (label of labels; track $index) {

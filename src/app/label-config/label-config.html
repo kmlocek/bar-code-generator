@@ -1,9 +1,14 @@
 <div class="config-container">
   <div class="config-card">
-    <h1>Barcode Label Generator</h1>
-    <p class="description">
-      Configure your barcode labels in Basic or Advanced mode.
-    </p>
+    <div class="header-with-lang">
+      <div>
+        <h1>{{ translationService.t('app.title') }}</h1>
+        <p class="description">
+          {{ translationService.t('app.description') }}
+        </p>
+      </div>
+      <app-language-switcher></app-language-switcher>
+    </div>
 
     <!-- Mode Toggle -->
     <div class="mode-toggle">
@@ -12,14 +17,14 @@
         [class.active]="mode === 'basic'"
         (click)="mode = 'basic'"
       >
-        Basic
+        {{ translationService.t('mode.basic') }}
       </button>
       <button 
         class="mode-btn" 
         [class.active]="mode === 'advanced'"
         (click)="mode = 'advanced'"
       >
-        Advanced
+        {{ translationService.t('mode.advanced') }}
       </button>
     </div>
 
@@ -28,8 +33,8 @@
     <div class="input-section">
       <div class="input-group">
         <label for="codeLength">
-          <span class="label-title">Code Length</span>
-          <span class="label-subtitle">Total length of each barcode (including prefix and child digits)</span>
+          <span class="label-title">{{ translationService.t('basic.codeLength') }}</span>
+          <span class="label-subtitle">{{ translationService.t('basic.codeLengthSubtitle') }}</span>
         </label>
         <input 
           type="number" 
@@ -42,8 +47,8 @@
 
       <div class="input-group">
         <label>
-          <span class="label-title">Prefix Strategy</span>
-          <span class="label-subtitle">How to generate the prefix for all codes</span>
+          <span class="label-title">{{ translationService.t('basic.prefixStrategy') }}</span>
+          <span class="label-subtitle">{{ translationService.t('basic.prefixStrategySubtitle') }}</span>
         </label>
         <div class="radio-group">
           <label class="radio-option">
@@ -53,7 +58,7 @@
               value="date"
               [(ngModel)]="prefixStrategy"
             />
-            <span>Current Date (YYMMDD format)</span>
+            <span>{{ translationService.t('basic.prefixDate') }}</span>
           </label>
           <label class="radio-option">
             <input 
@@ -62,7 +67,7 @@
               value="static"
               [(ngModel)]="prefixStrategy"
             />
-            <span>Static Number</span>
+            <span>{{ translationService.t('basic.prefixStatic') }}</span>
           </label>
         </div>
         
@@ -77,13 +82,13 @@
         }
         
         <div class="examples">
-          <strong>Example:</strong>
+          <strong>{{ translationService.t('basic.exampleLabel') }}</strong>
           <ul>
             @if (prefixStrategy === 'date') {
-            <li>Today's date ({{ getPrefix() }}) will be used as prefix</li>
+            <li>{{ translationService.t('basic.exampleDate', { date: getPrefix() }) }}</li>
             }
             @if (prefixStrategy === 'static') {
-            <li>Your static number will be used as prefix</li>
+            <li>{{ translationService.t('basic.exampleStatic') }}</li>
             }
           </ul>
         </div>
@@ -91,8 +96,8 @@
 
       <div class="input-group">
         <label for="startOffset">
-          <span class="label-title">Start Offset</span>
-          <span class="label-subtitle">Starting counter number (default is 0)</span>
+          <span class="label-title">{{ translationService.t('basic.startOffset') }}</span>
+          <span class="label-subtitle">{{ translationService.t('basic.startOffsetSubtitle') }}</span>
         </label>
         <input 
           type="number" 
@@ -102,10 +107,10 @@
           placeholder="0"
         />
         <div class="examples">
-          <strong>Example:</strong>
+          <strong>{{ translationService.t('basic.exampleLabel') }}</strong>
           <ul>
-            <li>Offset 0: First group starts at ...00, ...01, ...02...</li>
-            <li>Offset 5: First group starts at ...50, ...51, ...52...</li>
+            <li>{{ translationService.t('basic.offsetExample1') }}</li>
+            <li>{{ translationService.t('basic.offsetExample2') }}</li>
           </ul>
         </div>
       </div>
@@ -113,8 +118,8 @@
       <div class="counts-row">
         <div class="input-group">
           <label for="countFives">
-            <span class="label-title">Count of 5s</span>
-            <span class="label-subtitle">Number of groups (5 labels each: mother 0 + children 1-4)</span>
+            <span class="label-title">{{ translationService.t('basic.countFives') }}</span>
+            <span class="label-subtitle">{{ translationService.t('basic.countFivesSubtitle') }}</span>
           </label>
           <input 
             type="number" 
@@ -127,8 +132,8 @@
 
         <div class="input-group">
           <label for="countTens">
-            <span class="label-title">Count of 10s</span>
-            <span class="label-subtitle">Number of groups (10 labels each: mother 0 + children 1-9)</span>
+            <span class="label-title">{{ translationService.t('basic.countTens') }}</span>
+            <span class="label-subtitle">{{ translationService.t('basic.countTensSubtitle') }}</span>
           </label>
           <input 
             type="number" 
@@ -141,15 +146,15 @@
       </div>
 
       <div class="examples">
-        <strong>Result Preview:</strong>
+        <strong>{{ translationService.t('basic.previewTitle') }}</strong>
         <ul>
-          <li>Total labels: {{ (countFives * 5) + (countTens * 10) }}</li>
-          <li>Example codes (prefix={{ getPrefix() }}, length={{ codeLength }}, offset={{ startOffset }}):</li>
+          <li>{{ translationService.t('basic.totalLabels', { count: (countFives * 5) + (countTens * 10) }) }}</li>
+          <li>{{ translationService.t('basic.exampleCodes', { prefix: getPrefix(), length: codeLength, offset: startOffset }) }}</li>
           @if (countFives > 0) {
-          <li>First 5s group: <code>{{ getPrefix() }}{{ (startOffset * 10).toString().padStart(codeLength - getPrefix().length, '0') }}</code> through <code>{{ getPrefix() }}{{ (startOffset * 10 + 4).toString().padStart(codeLength - getPrefix().length, '0') }}</code></li>
+          <li>{{ translationService.t('basic.firstFivesGroup') }} <code>{{ getPrefix() }}{{ (startOffset * 10).toString().padStart(codeLength - getPrefix().length, '0') }}</code> - <code>{{ getPrefix() }}{{ (startOffset * 10 + 4).toString().padStart(codeLength - getPrefix().length, '0') }}</code></li>
           }
           @if (countTens > 0) {
-          <li>First 10s group: <code>{{ getPrefix() }}{{ ((startOffset + countFives) * 10).toString().padStart(codeLength - getPrefix().length, '0') }}</code> through <code>{{ getPrefix() }}{{ ((startOffset + countFives) * 10 + 9).toString().padStart(codeLength - getPrefix().length, '0') }}</code></li>
+          <li>{{ translationService.t('basic.firstTensGroup') }} <code>{{ getPrefix() }}{{ ((startOffset + countFives) * 10).toString().padStart(codeLength - getPrefix().length, '0') }}</code> - <code>{{ getPrefix() }}{{ ((startOffset + countFives) * 10 + 9).toString().padStart(codeLength - getPrefix().length, '0') }}</code></li>
           }
         </ul>
       </div>
@@ -161,14 +166,14 @@
     <div class="input-section">
       <div class="input-group">
         <label for="labelInput">
-          <span class="label-title">Regular Labels</span>
-          <span class="label-subtitle">Individual label numbers</span>
+          <span class="label-title">{{ translationService.t('advanced.regularLabels') }}</span>
+          <span class="label-subtitle">{{ translationService.t('advanced.regularLabelsSubtitle') }}</span>
         </label>
         <div class="examples">
-          <strong>Examples:</strong>
+          <strong>{{ translationService.t('advanced.examples') }}</strong>
           <ul>
-            <li><code>7008440080, 7008440081</code> - Comma separated</li>
-            <li><code>100-105</code> - Range notation</li>
+            <li><code>7008440080, 7008440081</code> - {{ translationService.t('advanced.exampleComma') }}</li>
+            <li><code>100-105</code> - {{ translationService.t('advanced.exampleRange') }}</li>
           </ul>
         </div>
         <textarea 
@@ -181,16 +186,16 @@
 
       <div class="input-group">
         <label for="fivesInput">
-          <span class="label-title">5s - Mother + 4 Children</span>
-          <span class="label-subtitle">Appends 0-4 to base numbers</span>
+          <span class="label-title">{{ translationService.t('advanced.fivesTitle') }}</span>
+          <span class="label-subtitle">{{ translationService.t('advanced.fivesSubtitle') }}</span>
         </label>
         <div class="examples">
-          <strong>Examples:</strong>
+          <strong>{{ translationService.t('advanced.examples') }}</strong>
           <ul>
-            <li><code>100</code> → generates 1000, 1001, 1002, 1003, 1004</li>
-            <li><code>700844008</code> → generates 7008440080, 7008440081, 7008440082, 7008440083, 7008440084</li>
-            <li><code>100, 200</code> - Multiple base numbers</li>
-            <li><code>100-102</code> - Range of base numbers</li>
+            <li><code>100</code> {{ translationService.t('advanced.fivesExample1') }}</li>
+            <li><code>700844008</code> {{ translationService.t('advanced.fivesExample2') }}</li>
+            <li><code>100, 200</code> - {{ translationService.t('advanced.multipleBase') }}</li>
+            <li><code>100-102</code> - {{ translationService.t('advanced.rangeBase') }}</li>
           </ul>
         </div>
         <textarea 
@@ -203,15 +208,15 @@
 
       <div class="input-group">
         <label for="tensInput">
-          <span class="label-title">10s - Mother + 9 Children</span>
-          <span class="label-subtitle">Appends 0-9 to base numbers</span>
+          <span class="label-title">{{ translationService.t('advanced.tensTitle') }}</span>
+          <span class="label-subtitle">{{ translationService.t('advanced.tensSubtitle') }}</span>
         </label>
         <div class="examples">
-          <strong>Examples:</strong>
+          <strong>{{ translationService.t('advanced.examples') }}</strong>
           <ul>
-            <li><code>100</code> → generates 1000, 1001, 1002, ..., 1009</li>
-            <li><code>700844008</code> → generates 7008440080 through 7008440089</li>
-            <li><code>100-102</code> - Range generates all sequences</li>
+            <li><code>100</code> {{ translationService.t('advanced.tensExample1') }}</li>
+            <li><code>700844008</code> {{ translationService.t('advanced.tensExample2') }}</li>
+            <li><code>100-102</code> - {{ translationService.t('advanced.rangeGenerates') }}</li>
           </ul>
         </div>
         <textarea 
@@ -229,7 +234,7 @@
       (click)="generateLabels()"
       [disabled]="!hasAnyInput()"
     >
-      Generate Labels
+      {{ translationService.t('button.generate') }}
     </button>
   </div>
 </div>
