@@ -15,6 +15,7 @@
     font-size: 13px;
     cursor: pointer;
     transition: all 0.3s;
+    flex: 0 0 auto;
 
     &:hover:not(.active) {
       background: #e0e0e0;
