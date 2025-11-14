@@ -20,21 +20,15 @@
   .header-with-lang {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     gap: 20px;
     margin-bottom: 25px;
   }
 
   h1 {
-    margin: 0 0 10px 0;
+    margin: 0;
     color: #333;
     font-size: 2em;
-  }
-
-  .description {
-    color: #666;
-    margin-bottom: 0;
-    font-size: 1.05em;
   }
 
   .mode-toggle {
@@ -175,8 +169,8 @@
     }
 
     .radio-group {
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 10px;
       margin-bottom: 12px;
 
@@ -265,10 +259,6 @@
       font-size: 1.5em;
     }
 
-    .description {
-      font-size: 0.95em;
-    }
-
     .mode-toggle {
       .mode-btn {
         font-size: 14px;
@@ -289,6 +279,10 @@
 
       .label-subtitle {
         font-size: 0.85em !important;
+      }
+
+      .radio-group {
+        grid-template-columns: 1fr;
       }
 
       .examples {

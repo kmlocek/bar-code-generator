@@ -1,12 +1,7 @@
 <div class="config-container">
   <div class="config-card">
     <div class="header-with-lang">
-      <div>
-        <h1>{{ translationService.t('app.title') }}</h1>
-        <p class="description">
-          {{ translationService.t('app.description') }}
-        </p>
-      </div>
+      <h1>{{ translationService.t('app.title') }}</h1>
       <app-language-switcher></app-language-switcher>
     </div>
 
@@ -143,20 +138,6 @@
             placeholder="0"
           />
         </div>
-      </div>
-
-      <div class="examples">
-        <strong>{{ translationService.t('basic.previewTitle') }}</strong>
-        <ul>
-          <li>{{ translationService.t('basic.totalLabels', { count: (countFives * 5) + (countTens * 10) }) }}</li>
-          <li>{{ translationService.t('basic.exampleCodes', { prefix: getPrefix(), length: codeLength, offset: startOffset }) }}</li>
-          @if (countFives > 0) {
-          <li>{{ translationService.t('basic.firstFivesGroup') }} <code>{{ getPrefix() }}{{ (startOffset * 10).toString().padStart(codeLength - getPrefix().length, '0') }}</code> - <code>{{ getPrefix() }}{{ (startOffset * 10 + 4).toString().padStart(codeLength - getPrefix().length, '0') }}</code></li>
-          }
-          @if (countTens > 0) {
-          <li>{{ translationService.t('basic.firstTensGroup') }} <code>{{ getPrefix() }}{{ ((startOffset + countFives) * 10).toString().padStart(codeLength - getPrefix().length, '0') }}</code> - <code>{{ getPrefix() }}{{ ((startOffset + countFives) * 10 + 9).toString().padStart(codeLength - getPrefix().length, '0') }}</code></li>
-          }
-        </ul>
       </div>
     </div>
     }
