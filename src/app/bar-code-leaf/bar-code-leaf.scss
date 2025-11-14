@@ -1,7 +1,43 @@
+.back-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+  z-index: 1000;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.no-print {
+  @media print {
+    display: none !important;
+  }
+}
+
 .labels {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+}
+
+.label {
+  padding-top: 10px;
 }
 
 .label-container {
@@ -12,11 +48,5 @@
   height: 21.2mm;
   page-break-inside: avoid;
   break-inside: avoid;
-}
-
-.no-frame {
-  background-image: none;
-  padding: 10px 10px;
-  font-size: 40px;
-
+  border: 1px solid #000;
 }
