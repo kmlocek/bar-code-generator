@@ -2,41 +2,21 @@
   <div class="config-card">
     <div class="header-with-lang">
       <h1>{{ translationService.t('app.title') }}</h1>
-      <app-language-switcher></app-language-switcher>
+      <div class="header-controls">
+        <app-language-switcher></app-language-switcher>
+        <div class="hints-toggle">
+          <label class="hints-toggle-label">
+            <input 
+              type="checkbox" 
+              [(ngModel)]="showHints"
+              (change)="toggleShowHints()"
+            />
+            <span>{{ translationService.t('ui.showHints') }}</span>
+          </label>
+        </div>
+      </div>
     </div>
 
-    <!-- Mode Toggle -->
-    <div class="mode-toggle">
-      <button 
-        class="mode-btn" 
-        [class.active]="mode === 'basic'"
-        (click)="mode = 'basic'"
-      >
-        {{ translationService.t('mode.basic') }}
-      </button>
-      <button 
-        class="mode-btn" 
-        [class.active]="mode === 'advanced'"
-        (click)="mode = 'advanced'"
-      >
-        {{ translationService.t('mode.advanced') }}
-      </button>
-    </div>
-
-    <!-- Hints Toggle -->
-    <div class="hints-toggle">
-      <label class="hints-toggle-label">
-        <input 
-          type="checkbox" 
-          [(ngModel)]="showHints"
-          (change)="toggleShowHints()"
-        />
-        <span>{{ translationService.t('ui.showHints') }}</span>
-      </label>
-    </div>
-
-    <!-- Basic Mode -->
-    @if (mode === 'basic') {
     <div class="input-section">
       <div class="input-group">
         <label for="codeLength">
@@ -175,84 +155,6 @@
         </div>
       </div>
     </div>
-    }
-
-    <!-- Advanced Mode -->
-    @if (mode === 'advanced') {
-    <div class="input-section">
-      <div class="input-group">
-        <label for="labelInput">
-          <span class="label-title">{{ translationService.t('advanced.regularLabels') }}</span>
-        </label>
-        @if (showHints) {
-        <div class="examples">
-          <strong>{{ translationService.t('basic.descriptionLabel') }}</strong>
-          <p class="hint-text">{{ translationService.t('advanced.regularLabelsSubtitle') }}</p>
-          <strong>{{ translationService.t('advanced.examples') }}</strong>
-          <ul>
-            <li><code>7008440080, 7008440081</code> - {{ translationService.t('advanced.exampleComma') }}</li>
-            <li><code>100-105</code> - {{ translationService.t('advanced.exampleRange') }}</li>
-          </ul>
-        </div>
-        }
-        <textarea 
-          id="labelInput"
-          [(ngModel)]="labelInput" 
-          placeholder="e.g., 7008440080, 7008440081, 100-105"
-          rows="3"
-        ></textarea>
-      </div>
-
-      <div class="input-group">
-        <label for="fivesInput">
-          <span class="label-title">{{ translationService.t('advanced.fivesTitle') }}</span>
-        </label>
-        @if (showHints) {
-        <div class="examples">
-          <strong>{{ translationService.t('basic.descriptionLabel') }}</strong>
-          <p class="hint-text">{{ translationService.t('advanced.fivesSubtitle') }}</p>
-          <strong>{{ translationService.t('advanced.examples') }}</strong>
-          <ul>
-            <li><code>100</code> {{ translationService.t('advanced.fivesExample1') }}</li>
-            <li><code>700844008</code> {{ translationService.t('advanced.fivesExample2') }}</li>
-            <li><code>100, 200</code> - {{ translationService.t('advanced.multipleBase') }}</li>
-            <li><code>100-102</code> - {{ translationService.t('advanced.rangeBase') }}</li>
-          </ul>
-        </div>
-        }
-        <textarea 
-          id="fivesInput"
-          [(ngModel)]="fivesInput" 
-          placeholder="e.g., 100, 200, 300-305"
-          rows="3"
-        ></textarea>
-      </div>
-
-      <div class="input-group">
-        <label for="tensInput">
-          <span class="label-title">{{ translationService.t('advanced.tensTitle') }}</span>
-        </label>
-        @if (showHints) {
-        <div class="examples">
-          <strong>{{ translationService.t('basic.descriptionLabel') }}</strong>
-          <p class="hint-text">{{ translationService.t('advanced.tensSubtitle') }}</p>
-          <strong>{{ translationService.t('advanced.examples') }}</strong>
-          <ul>
-            <li><code>100</code> {{ translationService.t('advanced.tensExample1') }}</li>
-            <li><code>700844008</code> {{ translationService.t('advanced.tensExample2') }}</li>
-            <li><code>100-102</code> - {{ translationService.t('advanced.rangeGenerates') }}</li>
-          </ul>
-        </div>
-        }
-        <textarea 
-          id="tensInput"
-          [(ngModel)]="tensInput" 
-          placeholder="e.g., 100, 999944001"
-          rows="3"
-        ></textarea>
-      </div>
-    </div>
-    }
 
     <button 
       class="generate-btn" 
