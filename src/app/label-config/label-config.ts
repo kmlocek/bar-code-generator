@@ -21,6 +21,7 @@ export class LabelConfig {
   private readonly STORAGE_KEY_PREFIX_STRATEGY = 'barcode_prefixStrategy';
   private readonly STORAGE_KEY_STATIC_PREFIX = 'barcode_staticPrefix';
   private readonly STORAGE_KEY_SHOW_HINTS = 'barcode_showHints';
+  private readonly STORAGE_KEY_PAGE_CONFIG = 'barcode_pageConfig';
   
   // Form properties
   codeLength: number = this.loadCodeLength();
@@ -30,8 +31,21 @@ export class LabelConfig {
   countFives: number = 0;
   countTens: number = 0;
   
+  // Page and label size configuration (in mm)
+  paddingTop: number = 10.7;
+  paddingBottom: number = 10.7;
+  paddingLeft: number = 10;
+  paddingRight: number = 10;
+  columns: number = 5;
+  rows: number = 13;
+  labelWidth: number = 38;
+  labelHeight: number = 21.2;
+  
   // UI preferences
   showHints: boolean = this.loadShowHints();
+
+  // Validation
+  pageConfigErrors: string[] = [];
 
   private loadCodeLength(): number {
     const stored = localStorage.getItem(this.STORAGE_KEY_CODE_LENGTH);
@@ -53,9 +67,92 @@ export class LabelConfig {
     return stored !== 'false'; // Default to true if not set
   }
 
+  private loadPageConfig(): void {
+    const stored = localStorage.getItem(this.STORAGE_KEY_PAGE_CONFIG);
+    if (stored) {
+      try {
+        const config = JSON.parse(stored);
+        this.paddingTop = config.paddingTop ?? 10.7;
+        this.paddingBottom = config.paddingBottom ?? 10.7;
+        this.paddingLeft = config.paddingLeft ?? 10;
+        this.paddingRight = config.paddingRight ?? 10;
+        this.columns = config.columns ?? 5;
+        this.rows = config.rows ?? 13;
+        this.labelWidth = config.labelWidth ?? 38;
+        this.labelHeight = config.labelHeight ?? 21.2;
+      } catch (e) {
+        console.error('Failed to load page config', e);
+      }
+    }
+  }
+
+  private savePageConfig(): void {
+    const config = {
+      paddingTop: this.paddingTop,
+      paddingBottom: this.paddingBottom,
+      paddingLeft: this.paddingLeft,
+      paddingRight: this.paddingRight,
+      columns: this.columns,
+      rows: this.rows,
+      labelWidth: this.labelWidth,
+      labelHeight: this.labelHeight
+    };
+    localStorage.setItem(this.STORAGE_KEY_PAGE_CONFIG, JSON.stringify(config));
+  }
+
+  constructor() {
+    this.loadPageConfig();
+  }
+
   toggleShowHints(): void {
     // Value is already updated by two-way binding, just save to localStorage
     localStorage.setItem(this.STORAGE_KEY_SHOW_HINTS, this.showHints.toString());
+  }
+
+  onPageConfigChange(): void {
+    this.validatePageConfig();
+    this.savePageConfig();
+  }
+
+  private validatePageConfig(): void {
+    const A4_WIDTH = 210; // mm
+    const A4_HEIGHT = 297; // mm
+    this.pageConfigErrors = [];
+
+    // Validate width
+    const totalWidth = (this.labelWidth * this.columns) + this.paddingLeft + this.paddingRight;
+    if (totalWidth > A4_WIDTH) {
+      const maxWidth = A4_WIDTH - this.paddingLeft - this.paddingRight;
+      const maxColumns = Math.floor(maxWidth / this.labelWidth);
+      const message = this.translationService.t('page.errorWidthExceeded')
+        .replace('{width}', totalWidth.toFixed(1))
+        .replace('{maxColumns}', maxColumns.toString());
+      this.pageConfigErrors.push(message);
+    }
+
+    // Validate height (configured rows must fit on page)
+    const totalHeight = (this.labelHeight * this.rows) + this.paddingTop + this.paddingBottom;
+    if (totalHeight > A4_HEIGHT) {
+      const maxHeight = A4_HEIGHT - this.paddingTop - this.paddingBottom;
+      const maxRows = Math.floor(maxHeight / this.labelHeight);
+      const message = this.translationService.t('page.errorHeightExceeded')
+        .replace('{height}', totalHeight.toFixed(1))
+        .replace('{maxRows}', maxRows.toString());
+      this.pageConfigErrors.push(message);
+    }
+  }
+
+  restoreDefaultPageConfig(): void {
+    this.paddingTop = 10.7;
+    this.paddingBottom = 10.7;
+    this.paddingLeft = 10;
+    this.paddingRight = 10;
+    this.columns = 5;
+    this.rows = 13;
+    this.labelWidth = 38;
+    this.labelHeight = 21.2;
+    this.pageConfigErrors = [];
+    this.savePageConfig();
   }
 
   validateCodeLength(): void {
@@ -140,7 +237,18 @@ export class LabelConfig {
 
   generateLabels(): void {
     const allLabels = this.generateBasicModeLabels();
+    const pageConfig = {
+      paddingTop: this.paddingTop,
+      paddingBottom: this.paddingBottom,
+      paddingLeft: this.paddingLeft,
+      paddingRight: this.paddingRight,
+      columns: this.columns,
+      rows: this.rows,
+      labelWidth: this.labelWidth,
+      labelHeight: this.labelHeight
+    };
     this.labelService.setLabels(allLabels);
+    this.labelService.setPageConfig(pageConfig);
     this.router.navigate(['/preview']);
   }
 

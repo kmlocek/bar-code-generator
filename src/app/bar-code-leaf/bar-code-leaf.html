@@ -1,8 +1,18 @@
 <button class="back-button no-print" (click)="goBack()">{{ translationService.t('button.backToConfig') }}</button>
 
-<div class="labels">
+<div class="labels" [ngStyle]="{
+  'grid-template-columns': 'repeat(' + pageConfig.columns + ', ' + pageConfig.labelWidth + 'mm)',
+  'width': '210mm',
+  'box-sizing': 'border-box',
+  'padding': pageConfig.paddingTop + 'mm ' + pageConfig.paddingRight + 'mm ' + pageConfig.paddingBottom + 'mm ' + pageConfig.paddingLeft + 'mm'
+}">
       @for (label of labels; track $index) {
-      <div class="label-container">
+      <div class="label-container" [ngStyle]="{
+        'width': pageConfig.labelWidth + 'mm',
+        'min-width': pageConfig.labelWidth + 'mm',
+        'max-width': pageConfig.labelWidth + 'mm',
+        'height': pageConfig.labelHeight + 'mm'
+      }">
             <div class="label no-frame">
                   <ngx-barcode6 bc-format="CODE128" 
                   [bc-value]="label.text" 
@@ -13,5 +23,11 @@
             </ngx-barcode6>
             </div>
       </div>
+      @if (isPageBreak($index)) {
+      <div class="page-break no-print">
+        <div class="page-break-line"></div>
+        <div class="page-break-text">Page {{ getPageNumber($index) }} / Page {{ getPageNumber($index) + 1 }}</div>
+      </div>
+      }
       }
 </div>

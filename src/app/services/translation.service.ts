@@ -206,6 +206,60 @@ export class TranslationService {
     'ui.showHints': {
       pl: 'Pokaż podpowiedzi',
       en: 'Show hints'
+    },
+    
+    // Page Configuration
+    'page.title': {
+      pl: 'Konfiguracja Strony i Etykiet',
+      en: 'Page and Label Configuration'
+    },
+    'page.paddingTop': {
+      pl: 'Margines górny (mm)',
+      en: 'Top padding (mm)'
+    },
+    'page.paddingBottom': {
+      pl: 'Margines dolny (mm)',
+      en: 'Bottom padding (mm)'
+    },
+    'page.paddingLeft': {
+      pl: 'Margines lewy (mm)',
+      en: 'Left padding (mm)'
+    },
+    'page.paddingRight': {
+      pl: 'Margines prawy (mm)',
+      en: 'Right padding (mm)'
+    },
+    'page.columns': {
+      pl: 'Liczba kolumn',
+      en: 'Number of columns'
+    },
+    'page.rows': {
+      pl: 'Liczba wierszy',
+      en: 'Number of rows'
+    },
+    'page.labelWidth': {
+      pl: 'Szerokość etykiety (mm)',
+      en: 'Label width (mm)'
+    },
+    'page.labelHeight': {
+      pl: 'Wysokość etykiety (mm)',
+      en: 'Label height (mm)'
+    },
+    'page.subtitle': {
+      pl: 'Rozmiary strony i etykiet w milimetrach. Dostosuj do swojego arkusza etykiet. Pamiętaj o drukowaniu etykiet bez marginesów w oknie wydruku. Te wartości należy starannie zmierzyć i przetestować. Zmienione ustawienia są przechowywane w przeglądarce, ale mogą zostać przypadkowo usunięte – warto je zapisać osobno.',
+      en: 'Page and label sizes in millimeters. Adjust to match your label sheet. Remember to print labels without margins in the print dialog. These values need to be carefully measured and tested. Changed settings are stored in the browser but can be accidentally cleared – it\'s worth saving them separately.'
+    },
+    'page.restoreDefaults': {
+      pl: 'Przywróć domyślne',
+      en: 'Restore defaults'
+    },
+    'page.errorWidthExceeded': {
+      pl: 'Konfiguracja przekracza szerokość A4 (210mm).\nCałkowita szerokość: {width}mm\nZmniejsz liczbę kolumn do {maxColumns} lub dostosuj szerokość etykiety/marginesy.',
+      en: 'Configuration exceeds A4 width (210mm).\nTotal width: {width}mm\nReduce columns to {maxColumns} or adjust label width/padding.'
+    },
+    'page.errorHeightExceeded': {
+      pl: 'Konfiguracja przekracza wysokość A4 (297mm).\nCałkowita wysokość: {height}mm\nZmniejsz liczbę wierszy do {maxRows} lub dostosuj wysokość etykiety/marginesy.',
+      en: 'Configuration exceeds A4 height (297mm).\nTotal height: {height}mm\nReduce rows to {maxRows} or adjust label height/padding.'
     }
   };
 
