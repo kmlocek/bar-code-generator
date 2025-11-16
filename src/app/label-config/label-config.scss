@@ -34,7 +34,7 @@
   .mode-toggle {
     display: flex;
     gap: 10px;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
     background: #f0f0f0;
     padding: 5px;
     border-radius: 10px;
@@ -59,6 +59,37 @@
 
       &:hover:not(.active) {
         background: #e0e0e0;
+      }
+    }
+  }
+
+  .hints-toggle {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: flex-end;
+
+    .hints-toggle-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #666;
+      transition: color 0.3s;
+
+      &:hover {
+        color: #667eea;
+      }
+
+      input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        accent-color: #667eea;
+      }
+
+      span {
+        user-select: none;
       }
     }
   }
@@ -105,6 +136,7 @@
       background: #fff;
       padding: 12px;
       border-radius: 6px;
+      margin-top: 12px;
       margin-bottom: 12px;
       border: 1px solid #e0e0e0;
 

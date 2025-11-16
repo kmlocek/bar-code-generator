@@ -23,6 +23,18 @@
       </button>
     </div>
 
+    <!-- Hints Toggle -->
+    <div class="hints-toggle">
+      <label class="hints-toggle-label">
+        <input 
+          type="checkbox" 
+          [(ngModel)]="showHints"
+          (change)="toggleShowHints()"
+        />
+        <span>{{ translationService.t('ui.showHints') }}</span>
+      </label>
+    </div>
+
     <!-- Basic Mode -->
     @if (mode === 'basic') {
     <div class="input-section">
@@ -36,7 +48,9 @@
           id="codeLength"
           [(ngModel)]="codeLength"
           (ngModelChange)="validateCodeLength()"
+          (blur)="validateCodeLength()"
           min="1"
+          step="1"
           placeholder="e.g., 10"
         />
       </div>
@@ -75,12 +89,15 @@
           id="staticPrefix"
           [(ngModel)]="staticPrefix"
           (ngModelChange)="validateStaticPrefix()"
+          (blur)="validateStaticPrefix()"
           min="0"
+          step="1"
           placeholder="e.g., 123456"
           class="static-prefix-input"
         />
         }
         
+        @if (showHints) {
         <div class="examples">
           <strong>{{ translationService.t('basic.exampleLabel') }}</strong>
           <ul>
@@ -92,6 +109,7 @@
             }
           </ul>
         </div>
+        }
       </div>
 
       <div class="input-group">
@@ -103,16 +121,21 @@
           type="number" 
           id="startOffset"
           [(ngModel)]="startOffset"
-          (ngModelChange)="validateOffset()"
+          (input)="validateOffset()"
+          (blur)="validateOffset()"
           min="0"
+          [max]="getMaxOffset()"
+          step="1"
           placeholder="0"
         />
+        @if (showHints) {
         <div class="examples">
           <strong>{{ translationService.t('basic.exampleLabel') }}</strong>
           <ul>
             <li [innerHTML]="translationService.t('basic.offsetExampleDynamic', { offset: startOffset, code: getOffsetExample(startOffset) })"></li>
           </ul>
         </div>
+        }
       </div>
 
       <div class="counts-row">
@@ -157,6 +180,7 @@
           <span class="label-title">{{ translationService.t('advanced.regularLabels') }}</span>
           <span class="label-subtitle">{{ translationService.t('advanced.regularLabelsSubtitle') }}</span>
         </label>
+        @if (showHints) {
         <div class="examples">
           <strong>{{ translationService.t('advanced.examples') }}</strong>
           <ul>
@@ -164,6 +188,7 @@
             <li><code>100-105</code> - {{ translationService.t('advanced.exampleRange') }}</li>
           </ul>
         </div>
+        }
         <textarea 
           id="labelInput"
           [(ngModel)]="labelInput" 
@@ -177,6 +202,7 @@
           <span class="label-title">{{ translationService.t('advanced.fivesTitle') }}</span>
           <span class="label-subtitle">{{ translationService.t('advanced.fivesSubtitle') }}</span>
         </label>
+        @if (showHints) {
         <div class="examples">
           <strong>{{ translationService.t('advanced.examples') }}</strong>
           <ul>
@@ -186,6 +212,7 @@
             <li><code>100-102</code> - {{ translationService.t('advanced.rangeBase') }}</li>
           </ul>
         </div>
+        }
         <textarea 
           id="fivesInput"
           [(ngModel)]="fivesInput" 
@@ -199,6 +226,7 @@
           <span class="label-title">{{ translationService.t('advanced.tensTitle') }}</span>
           <span class="label-subtitle">{{ translationService.t('advanced.tensSubtitle') }}</span>
         </label>
+        @if (showHints) {
         <div class="examples">
           <strong>{{ translationService.t('advanced.examples') }}</strong>
           <ul>
@@ -207,6 +235,7 @@
             <li><code>100-102</code> - {{ translationService.t('advanced.rangeGenerates') }}</li>
           </ul>
         </div>
+        }
         <textarea 
           id="tensInput"
           [(ngModel)]="tensInput" 

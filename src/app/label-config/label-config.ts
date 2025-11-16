@@ -20,6 +20,7 @@ export class LabelConfig {
   private readonly STORAGE_KEY_CODE_LENGTH = 'barcode_codeLength';
   private readonly STORAGE_KEY_PREFIX_STRATEGY = 'barcode_prefixStrategy';
   private readonly STORAGE_KEY_STATIC_PREFIX = 'barcode_staticPrefix';
+  private readonly STORAGE_KEY_SHOW_HINTS = 'barcode_showHints';
   
   // Mode selection
   mode: 'basic' | 'advanced' = 'basic';
@@ -36,6 +37,9 @@ export class LabelConfig {
   startOffset: number = 0;
   countFives: number = 0;
   countTens: number = 0;
+  
+  // UI preferences
+  showHints: boolean = this.loadShowHints();
 
   private loadCodeLength(): number {
     const stored = localStorage.getItem(this.STORAGE_KEY_CODE_LENGTH);
@@ -52,11 +56,23 @@ export class LabelConfig {
     return stored ? parseInt(stored, 10) : 0;
   }
 
+  private loadShowHints(): boolean {
+    const stored = localStorage.getItem(this.STORAGE_KEY_SHOW_HINTS);
+    return stored !== 'false'; // Default to true if not set
+  }
+
+  toggleShowHints(): void {
+    // Value is already updated by two-way binding, just save to localStorage
+    localStorage.setItem(this.STORAGE_KEY_SHOW_HINTS, this.showHints.toString());
+  }
+
   validateCodeLength(): void {
     if (this.codeLength < 1 || isNaN(this.codeLength)) {
       this.codeLength = 1;
     }
     this.saveCodeLength();
+    // Re-validate offset since available space changed
+    this.validateOffset();
   }
 
   saveCodeLength(): void {
@@ -65,6 +81,8 @@ export class LabelConfig {
 
   savePrefixStrategy(): void {
     localStorage.setItem(this.STORAGE_KEY_PREFIX_STRATEGY, this.prefixStrategy);
+    // Re-validate offset since prefix length may have changed
+    this.validateOffset();
   }
 
   validateStaticPrefix(): void {
@@ -72,16 +90,48 @@ export class LabelConfig {
       this.staticPrefix = 0;
     }
     this.saveStaticPrefix();
+    // Re-validate offset since prefix length changed
+    this.validateOffset();
   }
 
   saveStaticPrefix(): void {
     localStorage.setItem(this.STORAGE_KEY_STATIC_PREFIX, this.staticPrefix.toString());
   }
 
-  validateOffset(): void {
-    if (this.startOffset < 0) {
-      this.startOffset = 0;
+  getMaxOffset(): number {
+    const prefix = this.getPrefix();
+    const remainingLength = this.codeLength - prefix.length;
+    
+    // Ensure there's at least 2 digits remaining (1 for offset, 1 for child)
+    if (remainingLength < 2) {
+      return 0;
     }
+    
+    // Maximum offset: (offset * 10 + 9) must fit in remainingLength digits
+    // So: offset <= (10^remainingLength - 10) / 10 = 10^(remainingLength-1) - 1
+    return Math.pow(10, remainingLength - 1) - 1;
+  }
+
+  validateOffset(): void {
+    // Use setTimeout to ensure validation happens after Angular's change detection
+    setTimeout(() => {
+      // Force to number in case it's a string
+      this.startOffset = Number(this.startOffset);
+      
+      if (this.startOffset < 0 || isNaN(this.startOffset) || !isFinite(this.startOffset)) {
+        this.startOffset = 0;
+        return;
+      }
+      
+      // Round to integer
+      this.startOffset = Math.floor(this.startOffset);
+      
+      const maxOffset = this.getMaxOffset();
+      
+      if (this.startOffset > maxOffset) {
+        this.startOffset = maxOffset;
+      }
+    }, 0);
   }
 
   validateCountFives(): void {

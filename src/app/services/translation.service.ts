@@ -196,6 +196,12 @@ export class TranslationService {
     'button.backToConfig': {
       pl: '← Powrót do Konfiguracji',
       en: '← Back to Config'
+    },
+    
+    // UI Preferences
+    'ui.showHints': {
+      pl: 'Pokaż podpowiedzi',
+      en: 'Show hints'
     }
   };
 
