@@ -35,7 +35,7 @@ export class LabelConfig {
 
   private loadCodeLength(): number {
     const stored = localStorage.getItem(this.STORAGE_KEY_CODE_LENGTH);
-    return stored ? parseInt(stored, 10) : 10;
+    return stored ? parseInt(stored, 10) : 14;
   }
 
   private loadPrefixStrategy(): 'date' | 'static' {
