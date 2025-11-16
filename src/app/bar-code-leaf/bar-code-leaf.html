@@ -7,7 +7,9 @@
   'padding': pageConfig.paddingTop + 'mm ' + pageConfig.paddingRight + 'mm ' + pageConfig.paddingBottom + 'mm ' + pageConfig.paddingLeft + 'mm'
 }">
       @for (label of labels; track $index) {
-      <div class="label-container" [ngStyle]="{
+      <div class="label-container" 
+        [class.first-in-row]="label.isFirstInRow"
+        [ngStyle]="{
         'width': pageConfig.labelWidth + 'mm',
         'min-width': pageConfig.labelWidth + 'mm',
         'max-width': pageConfig.labelWidth + 'mm',

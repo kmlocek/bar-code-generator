@@ -67,6 +67,30 @@
   page-break-inside: avoid;
   break-inside: avoid;
   overflow: hidden;
+
+  &.first-in-row {
+    position: relative;
+
+    // Left border (half height)
+    &::before {
+      content: '';
+      position: absolute;
+      left: 1mm;
+      top: 1mm;
+      height: 50%;
+      border-left: 1px dashed #ccc;
+    }
+
+    // Top border (half width)
+    &::after {
+      content: '';
+      position: absolute;
+      left: 1mm;
+      top: 1mm;
+      width: 50%;
+      border-top: 1px dashed #ccc;
+    }
+  }
 }
 
 .page-break {

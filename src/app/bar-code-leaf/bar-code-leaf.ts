@@ -7,6 +7,7 @@ import { TranslationService } from '../services/translation.service';
 
 export interface Label {
   text: string;
+  isFirstInRow?: boolean;
 }
 
 @Component({
@@ -32,6 +33,12 @@ export class BarCodeLeaf implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.labels = this.labelService.getLabels();
     this.pageConfig = this.labelService.getPageConfig();
+    
+    // Mark first element (mother code) based on barcode value
+    this.labels.forEach((label) => {
+      const lastDigit = label.text.charAt(label.text.length - 1);
+      label.isFirstInRow = lastDigit === '0';
+    });
     
     // Calculate how many labels fit per page
     const pageHeight = 297; // A4 height in mm

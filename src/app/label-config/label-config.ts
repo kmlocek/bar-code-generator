@@ -71,6 +71,19 @@ export class LabelConfig {
     return stored !== 'false'; // Default to true if not set
   }
 
+  private loadFormState(): void {
+    const formState = this.labelService.getFormState();
+    if (formState) {
+      this.startOffset = formState.startOffset;
+      this.countFours = formState.countFours;
+      this.countFives = formState.countFives;
+      this.countSixes = formState.countSixes;
+      this.countSevens = formState.countSevens;
+      this.countEights = formState.countEights;
+      this.countTens = formState.countTens;
+    }
+  }
+
   private loadPageConfig(): void {
     const stored = localStorage.getItem(this.STORAGE_KEY_PAGE_CONFIG);
     if (stored) {
@@ -106,6 +119,7 @@ export class LabelConfig {
 
   constructor() {
     this.loadPageConfig();
+    this.loadFormState();
   }
 
   toggleShowHints(): void {
@@ -275,8 +289,18 @@ export class LabelConfig {
       labelWidth: this.labelWidth,
       labelHeight: this.labelHeight
     };
+    const formState = {
+      startOffset: this.startOffset,
+      countFours: this.countFours,
+      countFives: this.countFives,
+      countSixes: this.countSixes,
+      countSevens: this.countSevens,
+      countEights: this.countEights,
+      countTens: this.countTens
+    };
     this.labelService.setLabels(allLabels);
     this.labelService.setPageConfig(pageConfig);
+    this.labelService.setFormState(formState);
     this.router.navigate(['/preview']);
   }
 

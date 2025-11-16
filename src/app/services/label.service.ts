@@ -12,6 +12,16 @@ export interface PageConfig {
   labelHeight: number;
 }
 
+export interface FormState {
+  startOffset: number;
+  countFours: number;
+  countFives: number;
+  countSixes: number;
+  countSevens: number;
+  countEights: number;
+  countTens: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -27,6 +37,7 @@ export class LabelService {
     labelWidth: 38,
     labelHeight: 21.2
   });
+  private formStateSignal = signal<FormState | null>(null);
 
   getLabels() {
     return this.labelsSignal();
@@ -43,5 +54,17 @@ export class LabelService {
 
   setPageConfig(config: PageConfig) {
     this.pageConfigSignal.set(config);
+  }
+
+  getFormState() {
+    return this.formStateSignal();
+  }
+
+  setFormState(state: FormState) {
+    this.formStateSignal.set(state);
+  }
+
+  clearFormState() {
+    this.formStateSignal.set(null);
   }
 }
