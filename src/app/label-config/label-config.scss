@@ -201,10 +201,6 @@
       }
     }
 
-    .static-prefix-input {
-      margin-top: 12px;
-    }
-
     .radio-group {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -234,6 +230,25 @@
         span {
           font-size: 14px;
           color: #333;
+        }
+
+        &.radio-option-with-input {
+          cursor: default;
+
+          .inline-prefix-input {
+            flex: 1;
+            padding: 6px 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            min-width: 0;
+            transition: border-color 0.3s;
+
+            &:focus {
+              outline: none;
+              border-color: #667eea;
+            }
+          }
         }
       }
     }

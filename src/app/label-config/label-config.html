@@ -71,7 +71,7 @@
             />
             <span>{{ translationService.t('basic.prefixDate') }}</span>
           </label>
-          <label class="radio-option">
+          <label class="radio-option radio-option-with-input">
             <input 
               type="radio" 
               name="prefixStrategy" 
@@ -79,23 +79,21 @@
               [(ngModel)]="prefixStrategy"
               (ngModelChange)="savePrefixStrategy()"
             />
-            <span>{{ translationService.t('basic.prefixStatic') }}</span>
+            <span>{{ translationService.t('basic.prefixStatic') }}:</span>
+            <input 
+              type="number" 
+              id="staticPrefix"
+              [(ngModel)]="staticPrefix"
+              (ngModelChange)="validateStaticPrefix()"
+              (blur)="validateStaticPrefix()"
+              (click)="prefixStrategy = 'static'; savePrefixStrategy()"
+              min="0"
+              step="1"
+              placeholder="123456"
+              class="inline-prefix-input"
+            />
           </label>
         </div>
-        
-        @if (prefixStrategy === 'static') {
-        <input 
-          type="number" 
-          id="staticPrefix"
-          [(ngModel)]="staticPrefix"
-          (ngModelChange)="validateStaticPrefix()"
-          (blur)="validateStaticPrefix()"
-          min="0"
-          step="1"
-          placeholder="e.g., 123456"
-          class="static-prefix-input"
-        />
-        }
         
         @if (showHints) {
         <div class="examples">
