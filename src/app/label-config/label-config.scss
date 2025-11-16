@@ -235,13 +235,68 @@
     }
   }
 
-  .counts-row {
+  .counts-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 12px;
     
-    .input-group {
-      margin-bottom: 0;
+    @media (max-width: 1024px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+    }
+    
+    .count-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      
+      label {
+        font-size: 14px;
+        font-weight: 500;
+        color: #555;
+        margin: 0;
+        transition: all 0.3s;
+      }
+      
+      input[type="number"] {
+        width: 100%;
+        padding: 10px 12px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 15px;
+        transition: all 0.3s;
+
+        &:focus {
+          outline: none;
+          border-color: #667eea;
+          box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        &::placeholder {
+          color: #999;
+        }
+      }
+
+      &.divisible {
+        label {
+          font-weight: 700;
+          color: #28a745;
+        }
+
+        input[type="number"] {
+          border-color: #28a745;
+          background-color: #f0fff4;
+
+          &:focus {
+            border-color: #28a745;
+            box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.15);
+          }
+        }
+      }
     }
   }
 
@@ -451,10 +506,6 @@
         font-size: 14px;
         padding: 10px 15px;
       }
-    }
-
-    .counts-row {
-      grid-template-columns: 1fr;
     }
 
     .input-group {

@@ -89,21 +89,41 @@ export class TranslationService {
       pl: 'Twój offset ({{ offset }}) → {{ code }}',
       en: 'Your offset ({{ offset }}) → {{ code }}'
     },
-    'basic.countFives': {
-      pl: 'Liczba 5-tek',
-      en: 'Count of 5s'
+    'basic.groupCountsTitle': {
+      pl: 'Grupy Etykiet',
+      en: 'Label Groups'
     },
-    'basic.countFivesSubtitle': {
-      pl: 'Liczba grup (po 5 etykiet: matka 0 + dzieci 1-4)',
-      en: 'Number of groups (5 labels each: mother 0 + children 1-4)'
+    'basic.groupCountsSubtitle': {
+      pl: 'Określ liczbę grup dla każdego rozmiaru. Każda grupa zawiera matkę (0) i dzieci.',
+      en: 'Specify the number of groups for each size. Each group contains mother (0) and children.'
+    },
+    'basic.groupCountsHint': {
+      pl: 'Każda grupa generuje etykiety z matką (końcówka 0) i dziećmi (kolejne cyfry). Na przykład: grupa 5-tek tworzy etykiety z końcówkami 0, 1, 2, 3, 4. Możesz łączyć różne rozmiary grup - zostaną wygenerowane w kolejności 4s → 5s → 6s → 7s → 8s → 10s.\n\nWażne: Jeśli planujesz wycinać pojedyncze wiersze z wydruku, wybieraj grupy podzielne przez liczbę kolumn (np. 5-ki lub 10-ki przy 5 kolumnach). Używanie grup niepodzielnych przez liczbę kolumn spowoduje, że etykiety będą rozdzielone między wiersze - np. przy grupach 6-tek i 5 kolumnach, ostatnia etykieta z grupy znajdzie się w nowym wierszu, a z następnej grupy już dwie etykiety przejdą do kolejnego wiersza.\n\nGrupy podzielne przez liczbę kolumn są wyróżnione pogrubioną czcionką i zielonym kolorem.',
+      en: 'Each group generates labels with a mother (ending 0) and children (sequential digits). For example: a group of 5s creates labels ending with 0, 1, 2, 3, 4. You can mix different group sizes - they will be generated in order 4s → 5s → 6s → 7s → 8s → 10s.\n\nImportant: If you plan to cut individual rows from the printout, choose groups divisible by the number of columns (e.g., 5s or 10s with 5 columns). Using groups not divisible by the column count will cause labels to split across rows - for example, with 6s groups and 5 columns, the last label from a group will end up on a new row, and from the next group, two labels will already be on the following row.\n\nGroups divisible by the number of columns are highlighted in bold and green.'
+    },
+    'basic.countFours': {
+      pl: '4-ki (0-3)',
+      en: '4s (0-3)'
+    },
+    'basic.countFives': {
+      pl: '5-ki (0-4)',
+      en: '5s (0-4)'
+    },
+    'basic.countSixes': {
+      pl: '6-ki (0-5)',
+      en: '6s (0-5)'
+    },
+    'basic.countSevens': {
+      pl: '7-ki (0-6)',
+      en: '7s (0-6)'
+    },
+    'basic.countEights': {
+      pl: '8-ki (0-7)',
+      en: '8s (0-7)'
     },
     'basic.countTens': {
-      pl: 'Liczba 10-tek',
-      en: 'Count of 10s'
-    },
-    'basic.countTensSubtitle': {
-      pl: 'Liczba grup (po 10 etykiet: matka 0 + dzieci 1-9)',
-      en: 'Number of groups (10 labels each: mother 0 + children 1-9)'
+      pl: '10-ki (0-9)',
+      en: '10s (0-9)'
     },
     'basic.previewTitle': {
       pl: 'Podgląd Wyniku:',

@@ -28,7 +28,11 @@ export class LabelConfig {
   prefixStrategy: 'date' | 'static' = this.loadPrefixStrategy();
   staticPrefix: number = this.loadStaticPrefix();
   startOffset: number = 0;
+  countFours: number = 0;
   countFives: number = 0;
+  countSixes: number = 0;
+  countSevens: number = 0;
+  countEights: number = 0;
   countTens: number = 0;
   
   // Page and label size configuration (in mm)
@@ -223,9 +227,33 @@ export class LabelConfig {
     }, 0);
   }
 
+  validateCountFours(): void {
+    if (this.countFours < 0 || isNaN(this.countFours)) {
+      this.countFours = 0;
+    }
+  }
+
   validateCountFives(): void {
     if (this.countFives < 0 || isNaN(this.countFives)) {
       this.countFives = 0;
+    }
+  }
+
+  validateCountSixes(): void {
+    if (this.countSixes < 0 || isNaN(this.countSixes)) {
+      this.countSixes = 0;
+    }
+  }
+
+  validateCountSevens(): void {
+    if (this.countSevens < 0 || isNaN(this.countSevens)) {
+      this.countSevens = 0;
+    }
+  }
+
+  validateCountEights(): void {
+    if (this.countEights < 0 || isNaN(this.countEights)) {
+      this.countEights = 0;
     }
   }
 
@@ -253,7 +281,11 @@ export class LabelConfig {
   }
 
   hasAnyInput(): boolean {
-    return this.codeLength > 0 && (this.countFives > 0 || this.countTens > 0);
+    return this.codeLength > 0 && (this.countFours > 0 || this.countFives > 0 || this.countSixes > 0 || this.countSevens > 0 || this.countEights > 0 || this.countTens > 0);
+  }
+
+  isGroupDivisibleByColumns(groupSize: number): boolean {
+    return this.columns > 0 && groupSize % this.columns === 0;
   }
   
   private generateBasicModeLabels(): string[] {
@@ -269,10 +301,45 @@ export class LabelConfig {
     const remainingLength = this.codeLength - prefix.length;
     let groupCounter = this.startOffset;
     
+    // Generate 4s (mother 0 + children 1-3 = 4 labels total)
+    for (let group = 0; group < this.countFours; group++) {
+      for (let child = 0; child <= 3; child++) {
+        const counterAndChild = (groupCounter * 10 + child).toString().padStart(remainingLength, '0');
+        labels.push(prefix + counterAndChild);
+      }
+      groupCounter++;
+    }
+    
     // Generate 5s (mother 0 + children 1-4 = 5 labels total)
     for (let group = 0; group < this.countFives; group++) {
       for (let child = 0; child <= 4; child++) {
-        // Format: counter + child digit, padded to fill remaining length
+        const counterAndChild = (groupCounter * 10 + child).toString().padStart(remainingLength, '0');
+        labels.push(prefix + counterAndChild);
+      }
+      groupCounter++;
+    }
+    
+    // Generate 6s (mother 0 + children 1-5 = 6 labels total)
+    for (let group = 0; group < this.countSixes; group++) {
+      for (let child = 0; child <= 5; child++) {
+        const counterAndChild = (groupCounter * 10 + child).toString().padStart(remainingLength, '0');
+        labels.push(prefix + counterAndChild);
+      }
+      groupCounter++;
+    }
+    
+    // Generate 7s (mother 0 + children 1-6 = 7 labels total)
+    for (let group = 0; group < this.countSevens; group++) {
+      for (let child = 0; child <= 6; child++) {
+        const counterAndChild = (groupCounter * 10 + child).toString().padStart(remainingLength, '0');
+        labels.push(prefix + counterAndChild);
+      }
+      groupCounter++;
+    }
+    
+    // Generate 8s (mother 0 + children 1-7 = 8 labels total)
+    for (let group = 0; group < this.countEights; group++) {
+      for (let child = 0; child <= 7; child++) {
         const counterAndChild = (groupCounter * 10 + child).toString().padStart(remainingLength, '0');
         labels.push(prefix + counterAndChild);
       }
@@ -282,7 +349,6 @@ export class LabelConfig {
     // Generate 10s (mother 0 + children 1-9 = 10 labels total)
     for (let group = 0; group < this.countTens; group++) {
       for (let child = 0; child <= 9; child++) {
-        // Format: counter + child digit, padded to fill remaining length
         const counterAndChild = (groupCounter * 10 + child).toString().padStart(remainingLength, '0');
         labels.push(prefix + counterAndChild);
       }

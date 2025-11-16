@@ -123,36 +123,91 @@
         }
       </div>
 
-      <div class="counts-row">
-        <div class="input-group">
-          <label for="countFives">
-            <span class="label-title">{{ translationService.t('basic.countFives') }}</span>
-            <span class="label-subtitle">{{ translationService.t('basic.countFivesSubtitle') }}</span>
-          </label>
-          <input 
-            type="number" 
-            id="countFives"
-            [(ngModel)]="countFives"
-            (ngModelChange)="validateCountFives()"
-            min="0"
-            placeholder="0"
-          />
-        </div>
+      <div class="input-group">
+        <label>
+          <span class="label-title">{{ translationService.t('basic.groupCountsTitle') }}</span>
+        </label>
+        
+        <div class="counts-grid">
+          <div class="count-item" [class.divisible]="isGroupDivisibleByColumns(4)">
+            <label for="countFours">{{ translationService.t('basic.countFours') }}</label>
+            <input 
+              type="number" 
+              id="countFours"
+              [(ngModel)]="countFours"
+              (ngModelChange)="validateCountFours()"
+              min="0"
+              placeholder="0"
+            />
+          </div>
 
-        <div class="input-group">
-          <label for="countTens">
-            <span class="label-title">{{ translationService.t('basic.countTens') }}</span>
-            <span class="label-subtitle">{{ translationService.t('basic.countTensSubtitle') }}</span>
-          </label>
-          <input 
-            type="number" 
-            id="countTens"
-            [(ngModel)]="countTens"
-            (ngModelChange)="validateCountTens()"
-            min="0"
-            placeholder="0"
-          />
+          <div class="count-item" [class.divisible]="isGroupDivisibleByColumns(5)">
+            <label for="countFives">{{ translationService.t('basic.countFives') }}</label>
+            <input 
+              type="number" 
+              id="countFives"
+              [(ngModel)]="countFives"
+              (ngModelChange)="validateCountFives()"
+              min="0"
+              placeholder="0"
+            />
+          </div>
+
+          <div class="count-item" [class.divisible]="isGroupDivisibleByColumns(6)">
+            <label for="countSixes">{{ translationService.t('basic.countSixes') }}</label>
+            <input 
+              type="number" 
+              id="countSixes"
+              [(ngModel)]="countSixes"
+              (ngModelChange)="validateCountSixes()"
+              min="0"
+              placeholder="0"
+            />
+          </div>
+
+          <div class="count-item" [class.divisible]="isGroupDivisibleByColumns(7)">
+            <label for="countSevens">{{ translationService.t('basic.countSevens') }}</label>
+            <input 
+              type="number" 
+              id="countSevens"
+              [(ngModel)]="countSevens"
+              (ngModelChange)="validateCountSevens()"
+              min="0"
+              placeholder="0"
+            />
+          </div>
+
+          <div class="count-item" [class.divisible]="isGroupDivisibleByColumns(8)">
+            <label for="countEights">{{ translationService.t('basic.countEights') }}</label>
+            <input 
+              type="number" 
+              id="countEights"
+              [(ngModel)]="countEights"
+              (ngModelChange)="validateCountEights()"
+              min="0"
+              placeholder="0"
+            />
+          </div>
+
+          <div class="count-item" [class.divisible]="isGroupDivisibleByColumns(10)">
+            <label for="countTens">{{ translationService.t('basic.countTens') }}</label>
+            <input 
+              type="number" 
+              id="countTens"
+              [(ngModel)]="countTens"
+              (ngModelChange)="validateCountTens()"
+              min="0"
+              placeholder="0"
+            />
+          </div>
         </div>
+        
+        @if (showHints) {
+        <div class="examples">
+          <strong>{{ translationService.t('basic.descriptionLabel') }}</strong>
+          <p class="hint-text">{{ translationService.t('basic.groupCountsHint') }}</p>
+        </div>
+        }
       </div>
 
       <!-- Page Configuration Section -->
