@@ -108,7 +108,7 @@
       margin-bottom: 12px;
       border: 1px solid #e0e0e0;
 
-      strong {
+      > strong {
         color: #555;
         font-size: 0.9em;
       }
@@ -122,6 +122,11 @@
         margin: 4px 0;
         color: #666;
         font-size: 0.85em;
+
+        ::ng-deep strong {
+          color: #dc3545 !important;
+          font-weight: bold;
+        }
       }
 
       code {

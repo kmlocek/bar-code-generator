@@ -42,8 +42,8 @@ export class TranslationService {
       en: 'Code Length'
     },
     'basic.codeLengthSubtitle': {
-      pl: 'Całkowita długość każdego kodu kreskowego (w tym prefiks i cyfry)',
-      en: 'Total length of each barcode (including prefix and child digits)'
+      pl: 'Całkowita długość każdego kodu kreskowego',
+      en: 'Total length of each barcode'
     },
     'basic.prefixStrategy': {
       pl: 'Strategia Prefiksu',
@@ -66,12 +66,12 @@ export class TranslationService {
       en: 'Example:'
     },
     'basic.exampleDate': {
-      pl: 'Dzisiejsza data ({{ date }}) będzie użyta jako prefiks',
-      en: "Today's date ({{ date }}) will be used as prefix"
+      pl: 'Dzisiejsza data ({{ date }}) będzie użyta jako prefiks → {{ code }}',
+      en: "Today's date ({{ date }}) will be used as prefix → {{ code }}"
     },
     'basic.exampleStatic': {
-      pl: 'Twój numer statyczny będzie użyty jako prefiks',
-      en: 'Your static number will be used as prefix'
+      pl: 'Twój numer statyczny będzie użyty jako prefiks → {{ code }}',
+      en: 'Your static number will be used as prefix → {{ code }}'
     },
     'basic.startOffset': {
       pl: 'Offset Startowy',
@@ -81,13 +81,9 @@ export class TranslationService {
       pl: 'Początkowy numer licznika (domyślnie 0)',
       en: 'Starting counter number (default is 0)'
     },
-    'basic.offsetExample1': {
-      pl: 'Offset 0: Pierwsza grupa zaczyna się od ...00, ...01, ...02...',
-      en: 'Offset 0: First group starts at ...00, ...01, ...02...'
-    },
-    'basic.offsetExample2': {
-      pl: 'Offset 5: Pierwsza grupa zaczyna się od ...50, ...51, ...52...',
-      en: 'Offset 5: First group starts at ...50, ...51, ...52...'
+    'basic.offsetExampleDynamic': {
+      pl: 'Twój offset ({{ offset }}) → {{ code }}',
+      en: 'Your offset ({{ offset }}) → {{ code }}'
     },
     'basic.countFives': {
       pl: 'Liczba 5-tek',

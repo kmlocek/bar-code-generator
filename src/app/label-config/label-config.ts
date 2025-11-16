@@ -17,6 +17,10 @@ export class LabelConfig {
   private labelService = inject(LabelService);
   translationService = inject(TranslationService);
   
+  private readonly STORAGE_KEY_CODE_LENGTH = 'barcode_codeLength';
+  private readonly STORAGE_KEY_PREFIX_STRATEGY = 'barcode_prefixStrategy';
+  private readonly STORAGE_KEY_STATIC_PREFIX = 'barcode_staticPrefix';
+  
   // Mode selection
   mode: 'basic' | 'advanced' = 'basic';
   
@@ -26,12 +30,71 @@ export class LabelConfig {
   tensInput: string = '';
   
   // Basic mode properties
-  codeLength: number = 10;
-  prefixStrategy: 'date' | 'static' = 'date';
-  staticPrefix: string = '';
+  codeLength: number = this.loadCodeLength();
+  prefixStrategy: 'date' | 'static' = this.loadPrefixStrategy();
+  staticPrefix: number = this.loadStaticPrefix();
   startOffset: number = 0;
   countFives: number = 0;
   countTens: number = 0;
+
+  private loadCodeLength(): number {
+    const stored = localStorage.getItem(this.STORAGE_KEY_CODE_LENGTH);
+    return stored ? parseInt(stored, 10) : 10;
+  }
+
+  private loadPrefixStrategy(): 'date' | 'static' {
+    const stored = localStorage.getItem(this.STORAGE_KEY_PREFIX_STRATEGY);
+    return (stored === 'date' || stored === 'static') ? stored : 'date';
+  }
+
+  private loadStaticPrefix(): number {
+    const stored = localStorage.getItem(this.STORAGE_KEY_STATIC_PREFIX);
+    return stored ? parseInt(stored, 10) : 0;
+  }
+
+  validateCodeLength(): void {
+    if (this.codeLength < 1 || isNaN(this.codeLength)) {
+      this.codeLength = 1;
+    }
+    this.saveCodeLength();
+  }
+
+  saveCodeLength(): void {
+    localStorage.setItem(this.STORAGE_KEY_CODE_LENGTH, this.codeLength.toString());
+  }
+
+  savePrefixStrategy(): void {
+    localStorage.setItem(this.STORAGE_KEY_PREFIX_STRATEGY, this.prefixStrategy);
+  }
+
+  validateStaticPrefix(): void {
+    if (this.staticPrefix < 0 || isNaN(this.staticPrefix)) {
+      this.staticPrefix = 0;
+    }
+    this.saveStaticPrefix();
+  }
+
+  saveStaticPrefix(): void {
+    localStorage.setItem(this.STORAGE_KEY_STATIC_PREFIX, this.staticPrefix.toString());
+  }
+
+  validateOffset(): void {
+    if (this.startOffset < 0) {
+      this.startOffset = 0;
+    }
+  }
+
+  validateCountFives(): void {
+    if (this.countFives < 0 || isNaN(this.countFives)) {
+      this.countFives = 0;
+    }
+  }
+
+  validateCountTens(): void {
+    if (this.countTens < 0 || isNaN(this.countTens)) {
+      this.countTens = 0;
+    }
+  }
 
   generateLabels(): void {
     let allLabels: string[] = [];
@@ -100,8 +163,50 @@ export class LabelConfig {
       const day = now.getDate().toString().padStart(2, '0');
       return year + month + day; // YYMMDD format
     } else {
-      return this.staticPrefix;
+      return this.staticPrefix.toString();
     }
+  }
+
+  getFirstCodeExample(): string {
+    const prefix = this.getPrefix();
+    if (prefix.length >= this.codeLength) {
+      return '';
+    }
+    const remainingLength = this.codeLength - prefix.length;
+    const counterAndChild = (this.startOffset * 10).toString().padStart(remainingLength, '0');
+    return '<strong>' + prefix + '</strong>' + counterAndChild;
+  }
+
+  getOffsetExample(offset: number): string {
+    const prefix = this.getPrefix();
+    if (prefix.length >= this.codeLength) {
+      return '';
+    }
+    const remainingLength = this.codeLength - prefix.length;
+    const counterAndChild = (offset * 10).toString();
+    const paddedCounter = counterAndChild.padStart(remainingLength, '0');
+    
+    // The last digit is the child (0), everything before is the offset part
+    const childDigit = paddedCounter.slice(-1);
+    const offsetPart = paddedCounter.slice(0, -1);
+    
+    // Find where the offset value appears in the offset part (skip leading zeros)
+    const offsetStr = offset.toString();
+    let offsetIndex = offsetPart.lastIndexOf(offsetStr);
+    
+    // For offset 0, we want the rightmost 0 in the offset part
+    if (offset === 0) {
+      offsetIndex = offsetPart.length - 1;
+    }
+    
+    if (offsetIndex !== -1) {
+      const before = offsetPart.substring(0, offsetIndex);
+      const boldPart = offsetPart.substring(offsetIndex, offsetIndex + offsetStr.length);
+      const after = offsetPart.substring(offsetIndex + offsetStr.length);
+      return prefix + before + '<strong>' + boldPart + '</strong>' + after + childDigit;
+    }
+    
+    return prefix + paddedCounter;
   }
 
   private parseLabels(input: string): string[] {
