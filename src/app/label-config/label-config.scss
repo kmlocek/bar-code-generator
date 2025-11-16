@@ -143,6 +143,15 @@
       > strong {
         color: #555;
         font-size: 0.9em;
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      .hint-text {
+        margin: 0 0 10px 0;
+        color: #666;
+        font-size: 0.9em;
+        line-height: 1.4;
       }
 
       ul {

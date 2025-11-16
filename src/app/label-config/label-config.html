@@ -41,7 +41,6 @@
       <div class="input-group">
         <label for="codeLength">
           <span class="label-title">{{ translationService.t('basic.codeLength') }}</span>
-          <span class="label-subtitle">{{ translationService.t('basic.codeLengthSubtitle') }}</span>
         </label>
         <input 
           type="number" 
@@ -53,12 +52,17 @@
           step="1"
           placeholder="e.g., 10"
         />
+        @if (showHints) {
+        <div class="examples">
+          <strong>{{ translationService.t('basic.descriptionLabel') }}</strong>
+          <p class="hint-text">{{ translationService.t('basic.codeLengthSubtitle') }}</p>
+        </div>
+        }
       </div>
 
       <div class="input-group">
         <label>
           <span class="label-title">{{ translationService.t('basic.prefixStrategy') }}</span>
-          <span class="label-subtitle">{{ translationService.t('basic.prefixStrategySubtitle') }}</span>
         </label>
         <div class="radio-group">
           <label class="radio-option">
@@ -97,6 +101,8 @@
         
         @if (showHints) {
         <div class="examples">
+          <strong>{{ translationService.t('basic.descriptionLabel') }}</strong>
+          <p class="hint-text">{{ translationService.t('basic.prefixStrategySubtitle') }}</p>
           <strong>{{ translationService.t('basic.exampleLabel') }}</strong>
           <ul>
             @if (prefixStrategy === 'date') {
@@ -113,7 +119,6 @@
       <div class="input-group">
         <label for="startOffset">
           <span class="label-title">{{ translationService.t('basic.startOffset') }}</span>
-          <span class="label-subtitle">{{ translationService.t('basic.startOffsetSubtitle') }}</span>
         </label>
         <input 
           type="number" 
@@ -128,6 +133,8 @@
         />
         @if (showHints) {
         <div class="examples">
+          <strong>{{ translationService.t('basic.descriptionLabel') }}</strong>
+          <p class="hint-text">{{ translationService.t('basic.startOffsetSubtitle') }}</p>
           <strong>{{ translationService.t('basic.exampleLabel') }}</strong>
           <ul>
             <li [innerHTML]="translationService.t('basic.offsetExampleDynamic', { offset: startOffset, code: getOffsetExample(startOffset) })"></li>
@@ -176,10 +183,11 @@
       <div class="input-group">
         <label for="labelInput">
           <span class="label-title">{{ translationService.t('advanced.regularLabels') }}</span>
-          <span class="label-subtitle">{{ translationService.t('advanced.regularLabelsSubtitle') }}</span>
         </label>
         @if (showHints) {
         <div class="examples">
+          <strong>{{ translationService.t('basic.descriptionLabel') }}</strong>
+          <p class="hint-text">{{ translationService.t('advanced.regularLabelsSubtitle') }}</p>
           <strong>{{ translationService.t('advanced.examples') }}</strong>
           <ul>
             <li><code>7008440080, 7008440081</code> - {{ translationService.t('advanced.exampleComma') }}</li>
@@ -198,10 +206,11 @@
       <div class="input-group">
         <label for="fivesInput">
           <span class="label-title">{{ translationService.t('advanced.fivesTitle') }}</span>
-          <span class="label-subtitle">{{ translationService.t('advanced.fivesSubtitle') }}</span>
         </label>
         @if (showHints) {
         <div class="examples">
+          <strong>{{ translationService.t('basic.descriptionLabel') }}</strong>
+          <p class="hint-text">{{ translationService.t('advanced.fivesSubtitle') }}</p>
           <strong>{{ translationService.t('advanced.examples') }}</strong>
           <ul>
             <li><code>100</code> {{ translationService.t('advanced.fivesExample1') }}</li>
@@ -222,10 +231,11 @@
       <div class="input-group">
         <label for="tensInput">
           <span class="label-title">{{ translationService.t('advanced.tensTitle') }}</span>
-          <span class="label-subtitle">{{ translationService.t('advanced.tensSubtitle') }}</span>
         </label>
         @if (showHints) {
         <div class="examples">
+          <strong>{{ translationService.t('basic.descriptionLabel') }}</strong>
+          <p class="hint-text">{{ translationService.t('advanced.tensSubtitle') }}</p>
           <strong>{{ translationService.t('advanced.examples') }}</strong>
           <ul>
             <li><code>100</code> {{ translationService.t('advanced.tensExample1') }}</li>

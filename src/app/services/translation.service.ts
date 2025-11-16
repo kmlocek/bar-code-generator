@@ -42,16 +42,16 @@ export class TranslationService {
       en: 'Code Length'
     },
     'basic.codeLengthSubtitle': {
-      pl: 'Całkowita długość każdego kodu kreskowego',
-      en: 'Total length of each barcode'
+      pl: 'Całkowita długość każdego kodu kreskowego. Długość już uwzględnia cyfrę matki (0) i dzieci (1-9). Dłuższe kody ułatwiają utrzymanie unikalności.',
+      en: 'Total length of each barcode. The length already includes the mother (0) and children (1-9) digit. Longer codes make it easier to maintain uniqueness.'
     },
     'basic.prefixStrategy': {
       pl: 'Strategia Prefiksu',
       en: 'Prefix Strategy'
     },
     'basic.prefixStrategySubtitle': {
-      pl: 'Jak generować prefiks dla wszystkich kodów',
-      en: 'How to generate the prefix for all codes'
+      pl: 'Jak generować prefiks dla wszystkich kodów. Strategia daty zapewnia unikalność kodów drukowanych w różnych dniach dzięki zmiennemu prefiksowi. Numer statyczny pozwala na ręczne ustawienie prefiksu.',
+      en: 'How to generate the prefix for all codes. Date strategy ensures uniqueness when printing on different days through changing prefix. Static number allows manual prefix setting.'
     },
     'basic.prefixDate': {
       pl: 'Aktualna Data (format RRMMDD)',
@@ -60,6 +60,10 @@ export class TranslationService {
     'basic.prefixStatic': {
       pl: 'Numer Statyczny',
       en: 'Static Number'
+    },
+    'basic.descriptionLabel': {
+      pl: 'Opis:',
+      en: 'Description:'
     },
     'basic.exampleLabel': {
       pl: 'Przykład:',
@@ -78,8 +82,8 @@ export class TranslationService {
       en: 'Start Offset'
     },
     'basic.startOffsetSubtitle': {
-      pl: 'Początkowy numer licznika (domyślnie 0)',
-      en: 'Starting counter number (default is 0)'
+      pl: 'Offset służy do drukowania kolejnych kodów, gdy kody z tym samym prefiksem zostały już dziś wydrukowane. Wystarczy wpisać numer ostatniego wydrukowanego kodu lub wyższy, aby generowanie rozpoczęło się od tej wartości.',
+      en: 'Offset is used to print subsequent codes when codes with the same prefix were already printed today. Enter the last printed code number or higher to start generation from that value.'
     },
     'basic.offsetExampleDynamic': {
       pl: 'Twój offset ({{ offset }}) → {{ code }}',
