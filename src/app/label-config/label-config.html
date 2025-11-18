@@ -215,15 +215,22 @@
         <div class="page-config-section">
           <div class="page-config-header">
             <h2>{{ translationService.t('page.title') }}</h2>
-            <button 
-              class="restore-btn" 
-              (click)="restoreDefaultPageConfig()"
-              [title]="translationService.t('page.restoreDefaults')"
+          </div>
+
+          <!-- Preset Selection -->
+          <div class="preset-selection">
+            <select 
+              id="pagePreset"
+              [(ngModel)]="pagePreset"
+              (ngModelChange)="onPagePresetChange()"
+              class="preset-select"
             >
-              ↻
-            </button>
+              <option value="eya">{{ translationService.t('page.presetEya') }}</option>
+              <option value="custom">{{ translationService.t('page.presetCustom') }}</option>
+            </select>
           </div>
           
+          @if (pagePreset === 'custom') {
           <div class="config-grid">
           <div class="input-group-small">
             <label for="paddingTop">{{ translationService.t('page.paddingTop') }}</label>
@@ -329,6 +336,7 @@
             />
           </div>
         </div>
+        }
         
         @if (pageConfigErrors.length > 0) {
         <div class="validation-errors">

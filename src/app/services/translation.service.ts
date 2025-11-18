@@ -50,12 +50,12 @@ export class TranslationService {
       en: 'Prefix Strategy'
     },
     'basic.prefixStrategySubtitle': {
-      pl: 'Jak generować prefiks dla wszystkich kodów. Strategia daty zapewnia unikalność kodów drukowanych w różnych dniach dzięki zmiennemu prefiksowi. Numer statyczny pozwala na ręczne ustawienie prefiksu.',
-      en: 'How to generate the prefix for all codes. Date strategy ensures uniqueness when printing on different days through changing prefix. Static number allows manual prefix setting.'
+      pl: 'Jak generować prefiks dla wszystkich kodów. Strategia daty używa ostatniej cyfry roku (R) i dnia roku (DRR, np. 001-365), co zapewnia unikalność kodów drukowanych w różnych dniach. Taki prefiks tworzy kody unikalne co dziesięć lat. Numer statyczny pozwala na ręczne ustawienie prefiksu.',
+      en: 'How to generate the prefix for all codes. Date strategy uses the last digit of the year (Y) and day of the year (DDD, e.g., 001-365), ensuring uniqueness when printing on different days. This prefix creates unique codes every ten years. Static number allows manual prefix setting.'
     },
     'basic.prefixDate': {
-      pl: 'Aktualna Data (format RRMMDD)',
-      en: 'Current Date (YYMMDD format)'
+      pl: 'Aktualna Data (format RDDR)',
+      en: 'Current Date (YDDD format)'
     },
     'basic.prefixStatic': {
       pl: 'Numer Statyczny',
@@ -233,6 +233,18 @@ export class TranslationService {
       pl: 'Konfiguracja Strony i Etykiet',
       en: 'Page and Label Configuration'
     },
+    'page.preset': {
+      pl: 'Szablon Strony',
+      en: 'Page Preset'
+    },
+    'page.presetEya': {
+      pl: 'EYA - 65 Etykiet - 38x21.2mm',
+      en: 'EYA - 65 Labels - 38x21.2mm'
+    },
+    'page.presetCustom': {
+      pl: 'Niestandardowy',
+      en: 'Custom'
+    },
     'page.paddingTop': {
       pl: 'Margines górny (mm)',
       en: 'Top padding (mm)'
@@ -266,8 +278,8 @@ export class TranslationService {
       en: 'Label height (mm)'
     },
     'page.subtitle': {
-      pl: 'Rozmiary strony i etykiet w milimetrach. Dostosuj do swojego arkusza etykiet. Pamiętaj o drukowaniu etykiet bez marginesów w oknie wydruku. Te wartości należy starannie zmierzyć i przetestować. Zmienione ustawienia są przechowywane w przeglądarce, ale mogą zostać przypadkowo usunięte – warto je zapisać osobno.',
-      en: 'Page and label sizes in millimeters. Adjust to match your label sheet. Remember to print labels without margins in the print dialog. These values need to be carefully measured and tested. Changed settings are stored in the browser but can be accidentally cleared – it\'s worth saving them separately.'
+      pl: 'Wybierz jeden ze zdefiniowanych szablonów lub skonfiguruj stronę samodzielnie używając niestandardowej konfiguracji. Pamiętaj o drukowaniu bez marginesów w oknie wydruku.',
+      en: 'Choose one of the defined presets or configure the page yourself using custom configuration. Remember to print without margins in the print dialog.'
     },
     'page.restoreDefaults': {
       pl: 'Przywróć domyślne',

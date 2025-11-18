@@ -22,6 +22,8 @@ export class LabelConfig {
   private readonly STORAGE_KEY_STATIC_PREFIX = 'barcode_staticPrefix';
   private readonly STORAGE_KEY_SHOW_HINTS = 'barcode_showHints';
   private readonly STORAGE_KEY_PAGE_CONFIG = 'barcode_pageConfig';
+  private readonly STORAGE_KEY_CUSTOM_PAGE_CONFIG = 'barcode_customPageConfig';
+  private readonly STORAGE_KEY_PAGE_PRESET = 'barcode_pagePreset';
   
   // Form properties
   codeLength: number = this.loadCodeLength();
@@ -34,6 +36,9 @@ export class LabelConfig {
   countSevens: number = 0;
   countEights: number = 0;
   countTens: number = 0;
+  
+  // Page preset selection
+  pagePreset: 'eya' | 'custom' = 'eya';
   
   // Page and label size configuration (in mm)
   paddingTop: number = 10.7;
@@ -53,7 +58,7 @@ export class LabelConfig {
 
   private loadCodeLength(): number {
     const stored = localStorage.getItem(this.STORAGE_KEY_CODE_LENGTH);
-    return stored ? parseInt(stored, 10) : 14;
+    return stored ? parseInt(stored, 10) : 10;
   }
 
   private loadPrefixStrategy(): 'date' | 'static' {
@@ -118,8 +123,77 @@ export class LabelConfig {
   }
 
   constructor() {
+    this.loadPagePreset();
     this.loadPageConfig();
     this.loadFormState();
+    // Apply preset after loading config
+    if (this.pagePreset === 'eya') {
+      this.applyEyaPreset();
+    }
+  }
+
+  private loadPagePreset(): void {
+    const stored = localStorage.getItem(this.STORAGE_KEY_PAGE_PRESET);
+    if (stored === 'custom' || stored === 'eya') {
+      this.pagePreset = stored;
+    } else {
+      this.pagePreset = 'eya';
+    }
+  }
+
+  onPagePresetChange(): void {
+    localStorage.setItem(this.STORAGE_KEY_PAGE_PRESET, this.pagePreset);
+    if (this.pagePreset === 'eya') {
+      this.applyEyaPreset();
+    } else if (this.pagePreset === 'custom') {
+      this.loadCustomPageConfig();
+    }
+  }
+
+  private applyEyaPreset(): void {
+    this.paddingTop = 10.7;
+    this.paddingBottom = 10.7;
+    this.paddingLeft = 10;
+    this.paddingRight = 10;
+    this.columns = 5;
+    this.rows = 13;
+    this.labelWidth = 38;
+    this.labelHeight = 21.2;
+    this.pageConfigErrors = [];
+  }
+
+  private loadCustomPageConfig(): void {
+    const stored = localStorage.getItem(this.STORAGE_KEY_CUSTOM_PAGE_CONFIG);
+    if (stored) {
+      try {
+        const config = JSON.parse(stored);
+        this.paddingTop = config.paddingTop ?? 10.7;
+        this.paddingBottom = config.paddingBottom ?? 10.7;
+        this.paddingLeft = config.paddingLeft ?? 10;
+        this.paddingRight = config.paddingRight ?? 10;
+        this.columns = config.columns ?? 5;
+        this.rows = config.rows ?? 13;
+        this.labelWidth = config.labelWidth ?? 38;
+        this.labelHeight = config.labelHeight ?? 21.2;
+      } catch (e) {
+        console.error('Failed to load custom page config', e);
+      }
+    }
+    this.validatePageConfig();
+  }
+
+  private saveCustomPageConfig(): void {
+    const config = {
+      paddingTop: this.paddingTop,
+      paddingBottom: this.paddingBottom,
+      paddingLeft: this.paddingLeft,
+      paddingRight: this.paddingRight,
+      columns: this.columns,
+      rows: this.rows,
+      labelWidth: this.labelWidth,
+      labelHeight: this.labelHeight
+    };
+    localStorage.setItem(this.STORAGE_KEY_CUSTOM_PAGE_CONFIG, JSON.stringify(config));
   }
 
   toggleShowHints(): void {
@@ -128,7 +202,16 @@ export class LabelConfig {
   }
 
   onPageConfigChange(): void {
+    // When user changes config manually, switch to custom
+    if (this.pagePreset === 'eya') {
+      this.pagePreset = 'custom';
+      localStorage.setItem(this.STORAGE_KEY_PAGE_PRESET, 'custom');
+    }
     this.validatePageConfig();
+    // Save to custom config when in custom mode
+    if (this.pagePreset === 'custom') {
+      this.saveCustomPageConfig();
+    }
     this.savePageConfig();
   }
 
@@ -161,15 +244,9 @@ export class LabelConfig {
   }
 
   restoreDefaultPageConfig(): void {
-    this.paddingTop = 10.7;
-    this.paddingBottom = 10.7;
-    this.paddingLeft = 10;
-    this.paddingRight = 10;
-    this.columns = 5;
-    this.rows = 13;
-    this.labelWidth = 38;
-    this.labelHeight = 21.2;
-    this.pageConfigErrors = [];
+    this.pagePreset = 'eya';
+    localStorage.setItem(this.STORAGE_KEY_PAGE_PRESET, 'eya');
+    this.applyEyaPreset();
     this.savePageConfig();
   }
 
@@ -385,10 +462,11 @@ export class LabelConfig {
   getPrefix(): string {
     if (this.prefixStrategy === 'date') {
       const now = new Date();
-      const year = now.getFullYear().toString().slice(-2);
-      const month = (now.getMonth() + 1).toString().padStart(2, '0');
-      const day = now.getDate().toString().padStart(2, '0');
-      return year + month + day; // YYMMDD format
+      const year = now.getFullYear().toString().slice(-1); // Last digit of year
+      const startOfYear = new Date(now.getFullYear(), 0, 0);
+      const diff = now.getTime() - startOfYear.getTime();
+      const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24)).toString().padStart(3, '0');
+      return year + dayOfYear; // Format: Y + DDD (e.g., 5318 for 2025, day 318)
     } else {
       return this.staticPrefix.toString();
     }
